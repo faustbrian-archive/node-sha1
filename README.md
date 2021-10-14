@@ -8,8 +8,8 @@
 
 ## Installation
 
-```
-pnpm install @faustbrian/node-sha1
+```bash
+npm install @faustbrian/node-sha1
 ```
 
 ## Usage
