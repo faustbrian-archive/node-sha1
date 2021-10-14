@@ -13,5 +13,7 @@ export const hash = (content: Buffer | string | Buffer[]): Buffer => {
     return sha1.final();
   }
 
-  return SHA1.digest(content instanceof Buffer ? content : Buffer.from(content));
+  return SHA1.digest(
+    content instanceof Buffer ? content : Buffer.from(content),
+  );
 };

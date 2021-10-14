@@ -7,45 +7,45 @@ on:
     branches: [main]
 
 jobs:
-  test:
-    if: "!contains(github.event.head_commit.message, 'ci skip')"
-
+  lint:
     strategy:
       matrix:
         os: [ubuntu-latest]
-
     runs-on: ${{ matrix.os }}
-
     steps:
       - uses: actions/checkout@v2
-
       - uses: actions/setup-node@v2
         with:
-          node-version: 14.x
-
-      - name: Cache ~/.pnpm-store
-        uses: actions/cache@v2
-        env:
-          cache-name: cache-pnpm-store
+          node-version: 16.x
+      - name: Install
+        run: npm ci
+      - name: Lint
+        run: npm run lint
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
         with:
-          path: ~/.pnpm-store
-          key: ${{ runner.os }}-${{ matrix.node-version }}-build-${{ env.cache-name }}-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-${{ matrix.node-version }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-${{ matrix.node-version }}-build-
-            ${{ runner.os }}-
-      - name: Install pnpm
-        run: npm i -g pnpm
-
-      - name: Install deps
-        run: pnpm i
-
-      # Runs a set of commands using the runners shell
-      - name: Build and Test
+          node-version: 16.x
+      - name: Install
+        run: npm ci
+      - name: Build
+        run: npm run build
+  test:
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 16.x
+      - name: Install
+        run: npm ci
+      - name: Test
         run: npm run test
-
-      - name: Release
-        run: pnpx -y semantic-release --branches main
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

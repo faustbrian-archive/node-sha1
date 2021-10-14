@@ -1,4 +1,5 @@
-node_modules
 .DS_Store
-dist
+.parcel-cache
 *.log
+dist
+node_modules
