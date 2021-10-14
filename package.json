@@ -36,7 +36,7 @@
     "bcrypto": "^5.4.0"
   },
   "devDependencies": {
-    "@faustbrian/node-stdbundle": "^1.1.0"
+    "@faustbrian/node-stdbundle": "^1.1.1"
   },
   "engines": {
     "node": ">=12"
